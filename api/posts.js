@@ -8,6 +8,7 @@ const {
   getAllPosts,
   updatePost,
   getPostById,
+  deletePostById
 } = require('../db');
 
 postsRouter.get('/', async (req, res, next) => {
@@ -99,7 +100,12 @@ postsRouter.patch('/:postId', requireUser, async (req, res, next) => {
 });
 
 postsRouter.delete('/:postId', requireUser, async (req, res, next) => {
-  res.send({ message: 'under construction' });
+  try {
+    const post = await deletePostById(req.params.postId)
+    res.send(post)
+  } catch (error) {
+    next(error)
+  }
 });
 
 module.exports = postsRouter;
