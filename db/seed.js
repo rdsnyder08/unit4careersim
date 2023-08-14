@@ -49,6 +49,7 @@ async function createTables() {
         "authorId" INTEGER REFERENCES users(id),
         title varchar(255) NOT NULL,
         content TEXT NOT NULL,
+        tags TEXT,
         active BOOLEAN DEFAULT true
       );
 

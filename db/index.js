@@ -99,10 +99,7 @@ async function getUserByUsername(username) {
     `, [ username ]);
 
     if (!user) {
-      throw {
-        name: "UserNotFoundError",
-        message: "A user with that username does not exist"
-      }
+      return null;
     }
 
     return user;
@@ -122,11 +119,12 @@ async function createPost({
   tags = []
 }) {
   try {
+    
     const { rows: [ post ] } = await client.query(`
-      INSERT INTO posts("authorId", title, content) 
-      VALUES($1, $2, $3)
+      INSERT INTO posts("authorId", title, content, tags) 
+      VALUES($1, $2, $3, $4)
       RETURNING *;
-    `, [authorId, title, content]);
+    `, [authorId, title, content, JSON.stringify(tags)]);
 
     const tagList = await createTags(tags);
 
